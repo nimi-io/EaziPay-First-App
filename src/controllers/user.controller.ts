@@ -83,9 +83,15 @@ export const signUpController = async (userData: SignupArgs): Promise<any> => {
       return null;
     }
 
+    const secretKey = process.env.JWT_SECRET;
+
+    if (!secretKey) {
+      throw new Error("JWT_SECRET environment variable is not set.");
+      return null;
+    }
     user.token = jwt.sign(
       { email: user.email, id: user.id, Date: Date.now() },
-      "test",
+      secretKey,
       {
         expiresIn: "1h",
       }

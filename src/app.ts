@@ -5,6 +5,7 @@ import resolvers from "./resolvers/resolverIndex";
 import mongoose from "./utils/db"; // Import your Mongoose connection
 import schemaIndex from "./schema/schemaIndex";
 import { makeExecutableSchema } from "graphql-tools";
+require("dotenv").config();
 
 // const server = new ApolloServer({
 //   typeDefs,
@@ -12,7 +13,7 @@ import { makeExecutableSchema } from "graphql-tools";
 //   // schema: schemaIndex,
 // });
 
-const schema = makeExecutableSchema({ typeDefs, resolvers,  });
+const schema = makeExecutableSchema({ typeDefs, resolvers });
 
 const server = new ApolloServer({ schema });
 const startServer = async () => {

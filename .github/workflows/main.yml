@@ -1,0 +1,68 @@
+name: Deploy To Production Server
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+env:
+  HOST: ${{ secrets.STABLE_SERVER_IP }}
+  USERNAME: ${{ secrets.STABLE_SERVER_USER }}
+  PASSWORD: ${{ secrets.STABLE_SERVER_PASS }}
+
+jobs:
+  test_changes:
+    name: Test Changes
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x, 17.x, 18.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: "Install"
+        run: npm i
+
+      # - name: "Run Test Scripts"
+      #   run: npm run test
+      #   env:
+      #     CI: false
+      #     VERSION: v2
+      #     TOKEN_SECRET: ${{ secrets.STABLE_TOKEN_SECRET }}
+      #     TOKEN_REFRESH: ${{ secrets.STABLE_TOKEN_REFRESH }}
+      #     DB_CONNECT: ${{ vars.STAGING_MONGO_DB_URI }}
+
+  pull_changes_to_server:
+    name: Pull Changes To Server
+    needs: [test_changes]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pull changes to server
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          password: ${{ env.PASSWORD }}
+          script_stop: true
+          script: cd /var/www/EAZIPAY-FIRST-APP && git reset --hard HEAD &&  git pull
+
+  deploy_service:
+    name: Deploy Service
+    needs: [pull_changes_to_server]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ env.HOST }}
+          username: ${{ env.USERNAME }}
+          password: ${{ env.PASSWORD }}
+          script_stop: true
+          script: cd /var/www/EAZIPAY-SECOND-APP  && pnpm install && pm2 reload all 
