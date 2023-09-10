@@ -3,10 +3,7 @@ import mongoose from "mongoose";
 async function connectToMongoDB() {
   try {
     await mongoose
-      .connect(
-        "mongodb+srv://qwertyuiop:qwertyuiop@cluster73580.qiwomxh.mongodb.net/",
-        {}
-      )
+      .connect(`${process.env.MONGO_URL}`, {})
       .then(() => {
         console.log("Connected to MongoDB");
       })
