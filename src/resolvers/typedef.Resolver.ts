@@ -25,7 +25,7 @@ export const updateTypeDef = async (_: any, args: ItypeDefs) => {
     fs.writeFileSync(filePath, arrayOfTypdefLines.join("\n"));
     console.log("File has been re-Written");
 
-    // restartServer();
+    restartServer();
   } catch (error) {
     console.error("Error clearing the file:", error);
     return false;

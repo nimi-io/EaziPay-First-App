@@ -3,7 +3,6 @@ import { makeGraphQLRequest } from "./dbServiceIntegration";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 export const signInController = async (userData: LoginArgs): Promise<any> => {
-  //   console.log(userData);
   const { user } = await makeGraphQLRequest(`query{
          user(email: "${userData.email}") {
     email

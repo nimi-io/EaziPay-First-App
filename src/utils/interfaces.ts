@@ -1,4 +1,3 @@
-// Define types for resolver arguments
 export interface SignupArgs {
   username: string;
   email: string;
@@ -10,7 +9,6 @@ export interface LoginArgs {
   password: string;
 }
 
-// Define types for resolver return values
 export interface User {
   id?: string;
   username: string;
