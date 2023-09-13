@@ -10,3 +10,4 @@ export const signUp = async (_: any, args: SignupArgs) => {
 export const signIn = async (_: any, args: LoginArgs) => {
   return await signInController(args);
 };
+ 
