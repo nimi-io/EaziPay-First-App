@@ -1,3 +1,5 @@
+import { GraphQLSchema } from "graphql/type";
+
 export interface SignupArgs {
   username: string;
   email: string;
@@ -16,5 +18,5 @@ export interface User {
   password: string;
 }
 export interface ItypeDefs {
-  typeDefs: string;
+  typeDefs: any;
 }

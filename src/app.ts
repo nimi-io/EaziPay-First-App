@@ -4,6 +4,7 @@ import typeDefs from "./schema/typedef";
 import fs from "fs";
 import resolvers from "./resolvers/resolverIndex";
 import mongoose from "./utils/db";
+import * as gql from "graphql";
 import { makeExecutableSchema } from "graphql-tools";
 require("dotenv").config();
 import nodemon from "nodemon";
